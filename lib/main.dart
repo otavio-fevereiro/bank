@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:bank/cards_model.dart';
 import 'package:flutter/material.dart';
 import 'app_colors.dart';
@@ -13,12 +15,11 @@ class ScrollBehaviorModified extends ScrollBehavior {
 }
 
 void main() {
-
   var card = CardModel(
     title: "Sua fatura vence amanhã.",
     text: "Pagar >",
     image:
-    "https://noticiaoficial.com/wp-content/uploads/2021/08/Nubank_new_card-1-1-1024x644.png",
+        "https://noticiaoficial.com/wp-content/uploads/2021/08/Nubank_new_card-1-1-1024x644.png",
   );
 
   var cards = CardsModel(
@@ -84,13 +85,14 @@ class _NowDashState extends State<NowDash> with SingleTickerProviderStateMixin {
   late Animation<double> heightAnimation;
   late Animation<Offset> cardsInAnimation;
   late Animation<Offset> helloOutAnimation;
+  late Animation<double> helloOutOpacityAnimation;
   late Animation<Offset> notificationInAnimation;
+  late Animation<double> notificationInOpacityAnimation;
+  late Animation<double> notificationOutOpacityAnimation;
   late Animation<Offset> notificationOutAnimation;
 
   @override
   void initState() {
-
-
     controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 4000),
@@ -124,20 +126,6 @@ class _NowDashState extends State<NowDash> with SingleTickerProviderStateMixin {
       ),
     );
 
-    notificationInAnimation = Tween<Offset>(
-      begin: const Offset(0, -1),
-      end: Offset.zero,
-    ).animate(
-      CurvedAnimation(
-        parent: controller,
-        curve: const Interval(
-          0.3,
-          0.4,
-          curve: Curves.decelerate,
-        ),
-      ),
-    );
-
     helloOutAnimation = Tween<Offset>(
       begin: Offset.zero,
       end: const Offset(0, -1),
@@ -152,6 +140,62 @@ class _NowDashState extends State<NowDash> with SingleTickerProviderStateMixin {
       ),
     );
 
+    helloOutOpacityAnimation = Tween<double>(
+      begin: 1,
+      end: 0,
+    ).animate(
+      CurvedAnimation(
+        parent: controller,
+        curve: const Interval(
+          0.20,
+          0.35,
+          curve: Curves.linear,
+        ),
+      ),
+    );
+
+    notificationInAnimation = Tween<Offset>(
+      begin: const Offset(0, -1),
+      end: Offset.zero,
+    ).animate(
+      CurvedAnimation(
+        parent: controller,
+        curve: const Interval(
+          0.3,
+          0.4,
+          curve: Curves.decelerate,
+        ),
+      ),
+    );
+
+    notificationInOpacityAnimation = Tween<double>(
+      begin: 0,
+      end: 1,
+    ).animate(
+      CurvedAnimation(
+        parent: controller,
+        curve: const Interval(
+          0.30,
+          0.36,
+          curve: Curves.linear,
+        ),
+      ),
+    );
+
+    notificationOutOpacityAnimation = Tween<double>(
+      begin: 1,
+      end: 0,
+    ).animate(
+      CurvedAnimation(
+        parent: controller,
+        curve: const Interval(
+          0.80,
+          0.86,
+          curve: Curves.linear,
+        ),
+      ),
+    );
+
     notificationOutAnimation = Tween<Offset>(
       begin: Offset.zero,
       end: const Offset(0, -1),
@@ -159,8 +203,8 @@ class _NowDashState extends State<NowDash> with SingleTickerProviderStateMixin {
       CurvedAnimation(
         parent: controller,
         curve: const Interval(
-          0.85,
-          0.87,
+          0.80,
+          0.9,
           curve: Curves.decelerate,
         ),
       ),
@@ -180,40 +224,48 @@ class _NowDashState extends State<NowDash> with SingleTickerProviderStateMixin {
     return GestureDetector(
       onTap: _toggleBottomSheet,
       child: LayoutBuilder(
-        builder: (context, constraints) =>
-            AnimatedBuilder(
-              animation: controller,
-              builder: (context, child) =>
-                  ListView(
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: <Widget>[
-                      Container(
-                        color: AppColors.purple,
-                        height: heightAnimation.value,
-                        padding: const EdgeInsets.only(bottom: 15),
-                        child: Stack(
-                          children: [
-                            SlideTransition(
-                              position: helloOutAnimation,
-                              child: Hello(text: widget.hello),
-                            ),
-                            SlideTransition(
-                              position: notificationOutAnimation,
-                              child: SlideTransition(
-                                position: notificationInAnimation,
-                                child: Hello(text: widget.loading),
-                              ),
-                            ),
-                            SlideTransition(
-                              position: cardsInAnimation,
-                              child: Cards(cards: widget.cards),
-                            ),
-                          ],
+        builder: (context, constraints) => AnimatedBuilder(
+          animation: controller,
+          builder: (context, child) => ListView(
+            physics: const NeverScrollableScrollPhysics(),
+            children: <Widget>[
+              Container(
+                color: AppColors.purple,
+                height: heightAnimation.value,
+                padding: const EdgeInsets.only(bottom: 15),
+                child: Stack(
+                  children: [
+                    SlideTransition(
+                      position: helloOutAnimation,
+                      child: Opacity(
+                        opacity: helloOutOpacityAnimation.value,
+                        child: Hello(text: widget.hello),
+                      ),
+                    ),
+                    // SlideTransition(
+                    //   position: notificationOutAnimation,
+                    //   child:
+                      SlideTransition(
+                        position: notificationInAnimation,
+                        child: Opacity(
+                          opacity: notificationOutOpacityAnimation.value,
+                          child: Opacity(
+                            opacity: notificationInOpacityAnimation.value,
+                            child: Hello(text: widget.loading),
+                          ),
                         ),
                       ),
-                    ],
-                  ),
-            ),
+                    // ),
+                    SlideTransition(
+                      position: cardsInAnimation,
+                      child: Cards(cards: widget.cards),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
