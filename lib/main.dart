@@ -95,7 +95,7 @@ class _NowDashState extends State<NowDash> with SingleTickerProviderStateMixin {
   void initState() {
     controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 4000),
+      duration: const Duration(milliseconds: 5000),
     );
 
     heightAnimation = Tween(
@@ -107,20 +107,6 @@ class _NowDashState extends State<NowDash> with SingleTickerProviderStateMixin {
         curve: const Interval(
           0.85,
           1,
-          curve: Curves.decelerate,
-        ),
-      ),
-    );
-
-    cardsInAnimation = Tween<Offset>(
-      begin: const Offset(1, 0),
-      end: Offset.zero,
-    ).animate(
-      CurvedAnimation(
-        parent: controller,
-        curve: const Interval(
-          0.9,
-          1.0,
           curve: Curves.decelerate,
         ),
       ),
@@ -161,8 +147,8 @@ class _NowDashState extends State<NowDash> with SingleTickerProviderStateMixin {
       CurvedAnimation(
         parent: controller,
         curve: const Interval(
-          0.3,
-          0.4,
+          0.38,
+          0.48,
           curve: Curves.decelerate,
         ),
       ),
@@ -175,8 +161,8 @@ class _NowDashState extends State<NowDash> with SingleTickerProviderStateMixin {
       CurvedAnimation(
         parent: controller,
         curve: const Interval(
-          0.30,
-          0.36,
+          0.38,
+          0.46,
           curve: Curves.linear,
         ),
       ),
@@ -205,10 +191,26 @@ class _NowDashState extends State<NowDash> with SingleTickerProviderStateMixin {
         curve: const Interval(
           0.80,
           0.9,
-          curve: Curves.decelerate,
+          curve: Curves.linear,
         ),
       ),
     );
+
+    cardsInAnimation = Tween<Offset>(
+      begin: const Offset(1, 0),
+      end: Offset.zero,
+    ).animate(
+      CurvedAnimation(
+        parent: controller,
+        curve: const Interval(
+          0.86,
+          1.0,
+          curve: Curves.easeInOutBack,
+        ),
+      ),
+    );
+
+    controller.forward();
 
     super.initState();
   }
