@@ -1,7 +1,6 @@
-import 'dart:ffi';
-
 import 'package:bank/cards_model.dart';
 import 'package:flutter/material.dart';
+import 'package:bank/transition.dart';
 import 'app_colors.dart';
 import 'dart:math' as math;
 
@@ -54,11 +53,36 @@ void main() {
             )
           ],
         ),
-        body: NowDash(
-          hello: "Olá Gabriela",
-          loading: "Você tem ${cards.length} notificações",
-          cards: cards,
+        body: Container(
+          color: AppColors.purple,
+          child: TransitionsContainer(
+            duration: const Duration(seconds: 5),
+            children: [
+              TransitionWidget(
+                outCurve: const Interval(0.35, 0.4),
+                height: 60,
+                child: const Hello(text: "Olá Gabriela"),
+              ),
+              TransitionWidget(
+                inCurve: const Interval(0.4, 0.45),
+                outCurve: const Interval(0.75, 0.8),
+                height: 60,
+                child: Hello(text: "Você tem ${cards.length} sugestões"),
+              ),
+              TransitionWidget(
+                inCurve: const Interval(0.9, 1),
+                child: Cards(cards: cards),
+                height: 154,
+              ),
+            ],
+          ),
         ),
+
+        // NowDash(
+        //   hello: "Olá Gabriela",
+        //   loading: "Você tem ${cards.length} notificações",
+        //   cards: cards,
+        // ),
       ),
     ),
   );
@@ -95,12 +119,12 @@ class _NowDashState extends State<NowDash> with SingleTickerProviderStateMixin {
   void initState() {
     controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 5000),
+      duration: const Duration(seconds: 2),
     );
 
     heightAnimation = Tween(
       begin: 80.0,
-      end: 190.0,
+      end: 156.0,
     ).animate(
       CurvedAnimation(
         parent: controller,
@@ -247,16 +271,16 @@ class _NowDashState extends State<NowDash> with SingleTickerProviderStateMixin {
                     // SlideTransition(
                     //   position: notificationOutAnimation,
                     //   child:
-                      SlideTransition(
-                        position: notificationInAnimation,
+                    SlideTransition(
+                      position: notificationInAnimation,
+                      child: Opacity(
+                        opacity: notificationOutOpacityAnimation.value,
                         child: Opacity(
-                          opacity: notificationOutOpacityAnimation.value,
-                          child: Opacity(
-                            opacity: notificationInOpacityAnimation.value,
-                            child: Hello(text: widget.loading),
-                          ),
+                          opacity: notificationInOpacityAnimation.value,
+                          child: Hello(text: widget.loading),
                         ),
                       ),
+                    ),
                     // ),
                     SlideTransition(
                       position: cardsInAnimation,
@@ -292,14 +316,17 @@ class Hello extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: Text(
-        text,
-        style: const TextStyle(
-          color: AppColors.withe,
-          fontWeight: FontWeight.bold,
-          fontSize: 20,
+    return SizedBox(
+      height: 60,
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Text(
+          text,
+          style: const TextStyle(
+            color: AppColors.withe,
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
         ),
       ),
     );
@@ -340,7 +367,8 @@ class NuCard extends StatelessWidget {
         ),
       ),
       child: Container(
-        width: 182,
+        width: 156,
+        height: 114,
         padding: const EdgeInsets.all(12),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
