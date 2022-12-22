@@ -1,9 +1,4 @@
-import 'dart:ffi';
-
-import 'package:bank/cards_model.dart';
 import 'package:flutter/material.dart';
-import 'app_colors.dart';
-import 'dart:math' as math;
 
 class TransitionsContainer extends StatefulWidget {
   final List<TransitionWidget> children;
@@ -47,14 +42,12 @@ class TransitionsState extends State<TransitionsContainer>
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: _toggleBottomSheet,
-      child: LayoutBuilder(
-        builder: (context, constraints) => AnimatedBuilder(
-          animation: controller,
-          builder: (context, child) => SizedBox(
-            height: heightAnimation.value,
-            child: Stack(
-              children: _getChildren().toList(),
-            ),
+      child: AnimatedBuilder(
+        animation: controller,
+        builder: (context, child) => SizedBox(
+          height: heightAnimation.value,
+          child: Stack(
+            children: _getChildren().toList(),
           ),
         ),
       ),
@@ -178,6 +171,18 @@ class TransitionsState extends State<TransitionsContainer>
 }
 
 class TransitionWidget {
+
+  //transition: [{
+  //              type: opacity
+  //              curve: {begin: 0, end: 0.5, curve: curves.linear}
+  //              animatable: {begin:0, end: 100}
+  //              <OU>
+  //              animatable: {begin:{x:0, y:1}, end: {x:0, y:0}
+  //              },
+  //              {...}
+  //              ]
+  //
+
   final Interval? inCurve;
   final Interval? outCurve;
   final double height;

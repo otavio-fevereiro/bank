@@ -15,7 +15,7 @@ class ScrollBehaviorModified extends ScrollBehavior {
 
 void main() {
   var card = CardModel(
-    title: "Sua fatura vence amanhã.",
+    title: "Pagar fatura do cartão que vence amanhã ›",
     text: "Pagar >",
     image:
         "https://noticiaoficial.com/wp-content/uploads/2021/08/Nubank_new_card-1-1-1024x644.png",
@@ -72,17 +72,17 @@ void main() {
               TransitionWidget(
                 inCurve: const Interval(0.9, 1),
                 child: Cards(cards: cards),
-                height: 154,
+                height: 132,
               ),
             ],
           ),
-        ),
 
-        // NowDash(
-        //   hello: "Olá Gabriela",
-        //   loading: "Você tem ${cards.length} notificações",
-        //   cards: cards,
-        // ),
+          // child: NowDash(
+          //   hello: "Olá Gabriela",
+          //   loading: "Você tem ${cards.length} notificações",
+          //   cards: cards,
+          // ),
+        ),
       ),
     ),
   );
@@ -119,7 +119,7 @@ class _NowDashState extends State<NowDash> with SingleTickerProviderStateMixin {
   void initState() {
     controller = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 2),
+      duration: const Duration(seconds: 4),
     );
 
     heightAnimation = Tween(
@@ -234,8 +234,6 @@ class _NowDashState extends State<NowDash> with SingleTickerProviderStateMixin {
       ),
     );
 
-    controller.forward();
-
     super.initState();
   }
 
@@ -301,7 +299,7 @@ class _NowDashState extends State<NowDash> with SingleTickerProviderStateMixin {
       if (controller.isDismissed) {
         controller.forward();
       } else {
-        controller.reverse();
+        controller.reset();
       }
     }
   }
@@ -339,16 +337,15 @@ class Cards extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      scrollDirection: Axis.horizontal,
-      itemCount: cards.length,
-      itemBuilder: (BuildContext context, int index) {
-        return Padding(
-          padding: const EdgeInsets.only(left: 7),
-          child: NuCard(card: cards.getCard(index)),
-        );
-      },
-    );
+    return SizedBox(
+        height: 112,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: cards.length,
+          itemBuilder: (BuildContext context, int index) {
+            return NuCard(card: cards.getCard(index));
+          },
+        ));
   }
 }
 
@@ -358,34 +355,27 @@ class NuCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Card(
-      elevation: 0,
+      //elevation: 0,
       color: AppColors.withe,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
-          Radius.circular(20),
+          Radius.circular(15),
         ),
       ),
       child: Container(
         width: 156,
-        height: 114,
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.only(left:12,top: 16, right:12, bottom: 16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Transform.rotate(
-                  angle: math.pi / 180 * 90,
-                  child: Image.network(
-                    card.image,
-                    width: 40,
-                    height: 40,
-                  ),
-                ),
-                const Icon(
+              children: const <Widget>[
+                Spacer(),
+                Icon(
                   Icons.more_vert,
                   color: AppColors.gray,
                 ),
@@ -399,22 +389,9 @@ class NuCard extends StatelessWidget {
                 child: Text(
                   card.title,
                   style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15,
-                  ),
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Align(
-                alignment: Alignment.bottomLeft,
-                child: Text(
-                  card.text,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
                     color: AppColors.purple,
-                    fontSize: 15,
+                    fontFamily: "Graphik",
+                    fontSize: 12,
                   ),
                 ),
               ),
