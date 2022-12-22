@@ -6,7 +6,8 @@ class Now extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bdcTicker = BdcTicker(child: child);
-    final controller = AnimationController(vsync: vsync);
+    final controller = AnimationController(vsync: vsync,
+      duration: const Duration(milliseconds: 2000),);
     final animation = Tween<double>(begin: 0, end: 1).animate(
       CurvedAnimation(
         parent: controller,
@@ -37,3 +38,4 @@ class BdcTickerState extends State<BdcTicker>
   Widget build(BuildContext context) {
     return widget.child;
   }
+}
