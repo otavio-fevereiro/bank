@@ -5,42 +5,58 @@ class Now extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BdcAnimation(
+    return BdcAnimationController(
+        duration: const Duration(milliseconds: 5000),
         builder: (context, controller) {
           final animation = Tween<double>(begin: 0, end: 1).animate(
             CurvedAnimation(
               parent: controller,
-              curve: const Interval(0.85, 1, curve: Curves.decelerate),),);
+              curve: const Interval(0, 1, curve: Curves.decelerate),
+            ),
+          );
 
-          return Opacity(
+          return AnimatedBuilder(
+            animation: controller,
+            builder: (context, child) => Opacity(
               opacity: animation.value,
-              child: const Text("Olá Gabriela")
+              child: const Text("Olá Gabriela"),
+            ),
           );
         });
   }
 }
 
-typedef Builder = Widget Function(BuildContext context, AnimationController controller);
+typedef Builder = Widget Function(
+  BuildContext context,
+  AnimationController controller,
+);
 
-class BdcAnimation extends StatefulWidget {
+class BdcAnimationController extends StatefulWidget {
   final Builder builder;
+  final Duration duration;
 
-  const BdcAnimation({
+  const BdcAnimationController({
     Key? key,
+    required this.duration,
     required this.builder,
   }) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => BdcAnimationState();
+  State<StatefulWidget> createState() => BdcAnimationControllerState();
 }
 
-class BdcAnimationState extends State<BdcAnimation>
+class BdcAnimationControllerState extends State<BdcAnimationController>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
 
-  @override void initState() {
-    controller = AnimationController(vsync: this,
-      duration: const Duration(milliseconds: 2000),);
+  @override
+  void initState() {
+    controller = AnimationController(
+      vsync: this,
+      duration: widget.duration,
+    );
+
+    controller.forward();
 
     super.initState();
   }

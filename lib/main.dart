@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:bank/transition.dart';
 import 'app_colors.dart';
 import 'dart:math' as math;
+import 'example2.dart' as example2;
 
 class ScrollBehaviorModified extends ScrollBehavior {
   const ScrollBehaviorModified();
@@ -30,60 +31,62 @@ void main() {
       color: AppColors.withe,
       scrollBehavior: const ScrollBehaviorModified(),
       home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: AppColors.purple,
-          elevation: 0,
-          //title: const Text('Home'),
-          leading: IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.account_circle_rounded),
-          ),
-          actions: [
-            IconButton(
+          appBar: AppBar(
+            backgroundColor: AppColors.purple,
+            elevation: 0,
+            //title: const Text('Home'),
+            leading: IconButton(
               onPressed: () {},
-              icon: const Icon(Icons.remove_red_eye),
+              icon: const Icon(Icons.account_circle_rounded),
             ),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.question_mark_rounded),
-            ),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.add),
-            )
-          ],
-        ),
-        body: Container(
-          color: AppColors.purple,
-          child: TransitionsContainer(
-            duration: const Duration(seconds: 5),
-            children: [
-              TransitionWidget(
-                outCurve: const Interval(0.35, 0.4),
-                height: 60,
-                child: const Hello(text: "Olá Gabriela"),
+            actions: [
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.remove_red_eye),
               ),
-              TransitionWidget(
-                inCurve: const Interval(0.4, 0.45),
-                outCurve: const Interval(0.75, 0.8),
-                height: 60,
-                child: Hello(text: "Você tem ${cards.length} sugestões"),
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.question_mark_rounded),
               ),
-              TransitionWidget(
-                inCurve: const Interval(0.9, 1),
-                child: Cards(cards: cards),
-                height: 132,
-              ),
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.add),
+              )
             ],
           ),
+          body: const example2.Now()
+
+          // Container(
+          //   color: AppColors.purple,
+          //   child: TransitionsContainer(
+          //     duration: const Duration(seconds: 5),
+          //     children: [
+          //       TransitionWidget(
+          //         outCurve: const Interval(0.35, 0.4),
+          //         height: 60,
+          //         child: const Hello(text: "Olá Gabriela"),
+          //       ),
+          //       TransitionWidget(
+          //         inCurve: const Interval(0.4, 0.45),
+          //         outCurve: const Interval(0.75, 0.8),
+          //         height: 60,
+          //         child: Hello(text: "Você tem ${cards.length} sugestões"),
+          //       ),
+          //       TransitionWidget(
+          //         inCurve: const Interval(0.9, 1),
+          //         child: Cards(cards: cards),
+          //         height: 132,
+          //       ),
+          //     ],
+          //   ),
 
           // child: NowDash(
           //   hello: "Olá Gabriela",
           //   loading: "Você tem ${cards.length} notificações",
           //   cards: cards,
           // ),
-        ),
-      ),
+          //   ),
+          ),
     ),
   );
 }
@@ -355,7 +358,6 @@ class NuCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Card(
       //elevation: 0,
       color: AppColors.withe,
@@ -366,7 +368,8 @@ class NuCard extends StatelessWidget {
       ),
       child: Container(
         width: 156,
-        padding: const EdgeInsets.only(left:12,top: 16, right:12, bottom: 16),
+        padding:
+            const EdgeInsets.only(left: 12, top: 16, right: 12, bottom: 16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
