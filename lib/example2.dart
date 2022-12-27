@@ -56,6 +56,7 @@ class BdcAnimationControllerState extends State<BdcAnimationController>
       duration: widget.duration,
     );
 
+    //TODO: remove, this is only to start animation
     controller.forward();
 
     super.initState();
