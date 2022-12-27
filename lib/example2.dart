@@ -46,6 +46,7 @@ class BdcAnimationController extends StatefulWidget {
 }
 
 class BdcAnimationControllerState extends State<BdcAnimationController>
+    //TODO: como lidar com mixin, verificar com time de BDC
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
 

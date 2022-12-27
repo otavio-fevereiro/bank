@@ -1,9 +1,13 @@
 import 'package:bank/cards_model.dart';
+import 'package:bank/now/now_suggestion_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:bank/transition.dart';
 import 'app_colors.dart';
 import 'dart:math' as math;
 import 'example2.dart' as example2;
+
+import 'now/now_animation.dart';
+import 'now/now_hello_animation.dart';
 
 class ScrollBehaviorModified extends ScrollBehavior {
   const ScrollBehaviorModified();
@@ -31,62 +35,79 @@ void main() {
       color: AppColors.withe,
       scrollBehavior: const ScrollBehaviorModified(),
       home: Scaffold(
-          appBar: AppBar(
-            backgroundColor: AppColors.purple,
-            elevation: 0,
-            //title: const Text('Home'),
-            leading: IconButton(
+        appBar: AppBar(
+          backgroundColor: AppColors.purple,
+          elevation: 0,
+          //title: const Text('Home'),
+          leading: IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.account_circle_rounded),
+          ),
+          actions: [
+            IconButton(
               onPressed: () {},
-              icon: const Icon(Icons.account_circle_rounded),
+              icon: const Icon(Icons.remove_red_eye),
             ),
-            actions: [
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.remove_red_eye),
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.question_mark_rounded),
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.add),
-              )
-            ],
-          ),
-          body: const example2.Now()
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.question_mark_rounded),
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.add),
+            )
+          ],
+        ),
 
-          // Container(
-          //   color: AppColors.purple,
-          //   child: TransitionsContainer(
-          //     duration: const Duration(seconds: 5),
-          //     children: [
-          //       TransitionWidget(
-          //         outCurve: const Interval(0.35, 0.4),
-          //         height: 60,
-          //         child: const Hello(text: "Olá Gabriela"),
-          //       ),
-          //       TransitionWidget(
-          //         inCurve: const Interval(0.4, 0.45),
-          //         outCurve: const Interval(0.75, 0.8),
-          //         height: 60,
-          //         child: Hello(text: "Você tem ${cards.length} sugestões"),
-          //       ),
-          //       TransitionWidget(
-          //         inCurve: const Interval(0.9, 1),
-          //         child: Cards(cards: cards),
-          //         height: 132,
-          //       ),
-          //     ],
-          //   ),
-
-          // child: NowDash(
-          //   hello: "Olá Gabriela",
-          //   loading: "Você tem ${cards.length} notificações",
-          //   cards: cards,
-          // ),
-          //   ),
+        body: NowAnimation(
+          duration: const Duration(milliseconds: 5000),
+          child: Container(
+            color: AppColors.purple,
+            child: Stack(
+              children: const [
+                NowSuggestionAnimation(
+                  child: Hello(text: "Voce tem 10 sugestões"),
+                ),
+                NowHelloAnimation(
+                  child: Hello(text: "Olá Gabriela"),
+                ),
+              ],
+            ),
           ),
+        ),
+        //body: const example2.Now()
+
+        // Container(
+        //   color: AppColors.purple,
+        //   child: TransitionsContainer(
+        //     duration: const Duration(seconds: 5),
+        //     children: [
+        //       TransitionWidget(
+        //         outCurve: const Interval(0.35, 0.4),
+        //         height: 60,
+        //         child: const Hello(text: "Olá Gabriela"),
+        //       ),
+        //       TransitionWidget(
+        //         inCurve: const Interval(0.4, 0.45),
+        //         outCurve: const Interval(0.75, 0.8),
+        //         height: 60,
+        //         child: Hello(text: "Você tem ${cards.length} sugestões"),
+        //       ),
+        //       TransitionWidget(
+        //         inCurve: const Interval(0.9, 1),
+        //         child: Cards(cards: cards),
+        //         height: 132,
+        //       ),
+        //     ],
+        //   ),
+
+        // child: NowDash(
+        //   hello: "Olá Gabriela",
+        //   loading: "Você tem ${cards.length} notificações",
+        //   cards: cards,
+        // ),
+        //   ),
+      ),
     ),
   );
 }
@@ -317,8 +338,10 @@ class Hello extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+      color: AppColors.purple,
       height: 60,
+      width: 700,
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Text(
