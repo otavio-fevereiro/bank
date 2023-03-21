@@ -1,3 +1,4 @@
+/*
 import 'package:bank/now/now_animation_data.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +19,7 @@ class _NowSuggestionAnimationState extends State<NowSuggestionAnimation>
     with SingleTickerProviderStateMixin {
   late Animation<double> opacityIn;
   late Animation<double> opacityOut;
+  late Animation<Offset> slideIn;
   late AnimationController animationController;
 
   @override
@@ -25,15 +27,22 @@ class _NowSuggestionAnimationState extends State<NowSuggestionAnimation>
     animationController =
         Provider.of<NowAnimationData>(context).animationController;
     opacityIn = opacityInAnimation(animationController);
+    slideIn = slideInAnimation(animationController);
     opacityOut = opacityOutAnimation(animationController);
 
     return AnimatedBuilder(
       animation: animationController,
       builder: (context, child) => Opacity(
         opacity: opacityOut.value,
-        child: Opacity(
-          opacity: opacityIn.value,
-          child: widget.child,
+        child: SizedBox(
+          height: 60,
+          child: AlignTransition(
+            position: slideIn,
+            child: Opacity(
+              opacity: opacityIn.value,
+              child: widget.child,
+            ),
+          ),
         ),
       ),
     );
@@ -47,9 +56,25 @@ class _NowSuggestionAnimationState extends State<NowSuggestionAnimation>
       CurvedAnimation(
         parent: controller,
         curve: const Interval(
-          0.38,
-          0.46,
+          0.48,
+          0.53,
           curve: Curves.linear,
+        ),
+      ),
+    );
+  }
+
+  Animation<Offset> slideInAnimation(AnimationController animationController) {
+    return Tween<Offset>(
+      begin: const Offset(0, 1),
+      end: Offset.zero,
+    ).animate(
+      CurvedAnimation(
+        parent: animationController,
+        curve: const Interval(
+          0.48,
+          0.53,
+          curve: Cubic(0.7, 0, 0.28, 1),
         ),
       ),
     );
@@ -63,11 +88,12 @@ class _NowSuggestionAnimationState extends State<NowSuggestionAnimation>
       CurvedAnimation(
         parent: controller,
         curve: const Interval(
-          0.80,
-          0.86,
+          0.79,
+          0.84,
           curve: Curves.linear,
         ),
       ),
     );
   }
 }
+*/

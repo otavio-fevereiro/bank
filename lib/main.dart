@@ -59,25 +59,25 @@ void main() {
           ],
         ),
 
-        body: NowAnimation(
-          duration: const Duration(milliseconds: 5000),
-          child: Container(
-            color: AppColors.purple,
-            child: Stack(
-              children: const [
-                NowSuggestionAnimation(
-                  child: Hello(text: "Voce tem 10 sugestões"),
-                ),
-                NowHelloAnimation(
-                  child: Hello(text: "Olá Gabriela"),
-                ),
-              ],
-            ),
-          ),
-        ),
+        // body: NowAnimation(
+        //   duration: const Duration(milliseconds: 3900),
+        //   child: Container(
+        //     color: AppColors.purple,
+        //     child: Stack(
+        //       children: const [
+        //         NowSuggestionAnimation(
+        //           child: Hello(text: "Voce tem 10 sugestões"),
+        //         ),
+        //         NowHelloAnimation(
+        //           child: Hello(text: "Olá Gabriela"),
+        //         ),
+        //       ],
+        //     ),
+        //   ),
+        // ),
         //body: const example2.Now()
 
-        // Container(
+        // body:Container(
         //   color: AppColors.purple,
         //   child: TransitionsContainer(
         //     duration: const Duration(seconds: 5),
@@ -101,12 +101,11 @@ void main() {
         //     ],
         //   ),
 
-        // child: NowDash(
-        //   hello: "Olá Gabriela",
-        //   loading: "Você tem ${cards.length} notificações",
-        //   cards: cards,
-        // ),
-        //   ),
+        body: NowDash(
+          hello: "Olá Gabriela",
+          loading: "Você tem ${cards.length} notificações",
+          cards: cards,
+        ),
       ),
     ),
   );
@@ -138,6 +137,7 @@ class _NowDashState extends State<NowDash> with SingleTickerProviderStateMixin {
   late Animation<double> notificationInOpacityAnimation;
   late Animation<double> notificationOutOpacityAnimation;
   late Animation<Offset> notificationOutAnimation;
+  late Animation<Color?> colorAnimation;
 
   @override
   void initState() {
@@ -258,6 +258,20 @@ class _NowDashState extends State<NowDash> with SingleTickerProviderStateMixin {
       ),
     );
 
+    colorAnimation = ColorTween(
+      begin: AppColors.gray,
+      end: AppColors.purple,
+    ).animate(
+      CurvedAnimation(
+        parent: controller,
+        curve: const Interval(
+          0.0,
+          1.0,
+          curve: Curves.easeInOutBack,
+        ),
+      ),
+    );
+
     super.initState();
   }
 
@@ -278,7 +292,7 @@ class _NowDashState extends State<NowDash> with SingleTickerProviderStateMixin {
             physics: const NeverScrollableScrollPhysics(),
             children: <Widget>[
               Container(
-                color: AppColors.purple,
+                color: colorAnimation.value,
                 height: heightAnimation.value,
                 padding: const EdgeInsets.only(bottom: 15),
                 child: Stack(
